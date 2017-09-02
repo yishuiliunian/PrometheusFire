@@ -1,0 +1,56 @@
+syntax = "proto3";
+package com.prometheus.proto;
+
+message PTMessage {
+  int32 version = 1;
+  int64 seq = 2;
+  string servant = 3;
+  string method = 4;
+  bytes data = 5;
+  // 是否只是上下行
+  bool oneway = 6;
+  int32 code = 7;
+  string message = 8;
+}
+
+message PMNull {
+
+}
+
+message PTMakeOrderRequest {
+  string stock = 1;
+  float price = 2;
+  int32 quantity = 3;
+  enum MakeOrderType {
+    BUY = 0;
+    SALE = 1;
+  }
+  MakeOrderType slide = 4;
+}
+
+message PTStockQuote {
+  string stock;
+  float price;
+  float avgCost;
+  string initTime;
+  string transcatTime;
+  string totalAmount;
+  string closeableAmount;
+  string todayAmount;
+  PTMakeOrderRequest.MakeOrderType side;
+}
+
+message PTAccountState {
+  string accountID = 1;
+}
+message PMHeartBeatRequest {
+  string userID = 1;
+}
+
+service HeartBeatService {
+  rpc Heart(PMHeartBeatRequest) returns (PMNull);
+}
+
+service TradeService {
+  rpc MakeTrade(PTMakeOrderRequest) returns (PMNull);
+}

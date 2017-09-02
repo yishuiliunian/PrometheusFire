@@ -1,0 +1,14 @@
+require "rake"
+
+task :oc do
+  Rake::sh "protoc trader.proto --objc_out=../../mach_inject-semver-1.x/mach_inject_example/Payload/TradePB"
+end
+
+desc "生成JS代码"
+task :js  do
+   Rake::sh "protoc trader.proto --js_out=import_style=commonjs,binary:../src/protobuff"
+end
+
+
+task :all => [:oc, :js] do
+end
